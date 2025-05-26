@@ -1,0 +1,9 @@
+---
+
+- name: Configurar Caddy
+  copy:
+    src: Caddyfile
+    dest: /etc/caddy/Caddyfile
+    owner: root
+    group: root
+    mode: '0644'

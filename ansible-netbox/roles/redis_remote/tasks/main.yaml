@@ -1,0 +1,10 @@
+---
+
+- name: Modificación de redis.conf para permitir conexiones remotas a Redis
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^bind', line: bind 0.0.0.0}
+    - { regexp: '^protected-mode', line: protected-mode no}

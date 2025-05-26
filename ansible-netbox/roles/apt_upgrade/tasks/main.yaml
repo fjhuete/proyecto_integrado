@@ -1,0 +1,8 @@
+---
+
+- name: Actualización de los paquetes del sistema
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+  become: yes

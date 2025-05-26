@@ -1,0 +1,20 @@
+:80 {
+  log {
+    output file /var/log/caddy/access.log
+    format filter {
+      wrap console
+      fields {
+        request>headers>Authorization delete
+      }
+    }
+  }
+  encode gzip
+  header Strict-Transport-Security "max-age=31536000; preload"
+  @excludeDirs {
+    not path /static/* /media/*
+  }
+  reverse_proxy @excludeDirs localhost:8001
+  file_server {
+    root /opt/netbox/netbox/
+  }
+}

@@ -1,0 +1,34 @@
+---
+
+- hosts: all
+  remote_user: "{{ ssh_user }}"
+  become: True
+  serial: "100%"
+  roles:
+    - role: apt_upgrade
+
+- hosts: db
+  remote_user: "{{ ssh_user }}"
+  become: True
+  serial: "100%"
+  roles:
+    - role: postgres_install
+    - role: postgres_remote
+    - role: postgres_run
+    - role: postgres_db_create
+    - role: redis_install
+    - role: redis_remote
+    - role: redis_run
+
+- hosts: app
+  remote_user: "{{ ssh_user }}"
+  become: True
+  serial: "100%"
+  roles:
+    - role: python_install
+    - role: netbox_install
+    - role: gunicorn_install
+    - role: netbox_run
+    - role: caddy_install
+    - role: caddy_config
+    - role: caddy_run

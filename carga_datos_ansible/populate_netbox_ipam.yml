@@ -1,0 +1,45 @@
+---
+- name: PLAY 1 - Create RIRs
+  connection: local
+  hosts: localhost
+  gather_facts: False
+
+  roles:
+    - role: create_rirs
+      tags: rirs
+
+- name: PLAY 2 - Create Aggregates
+  connection: local
+  hosts: localhost
+  gather_facts: False
+
+  roles:
+    - role: create_aggregates
+      tags: aggregates
+
+- name: PLAY 3 - Create Prefix Roles
+  connection: local
+  hosts: localhost
+  gather_facts: False
+
+  roles:
+    - role: create_prefix_and_vlan_roles
+      tags: prefix_and_roles
+
+- name: PLAY 4 - Create Prefixes
+  connection: local
+  hosts: localhost
+  gather_facts: False
+
+  roles:
+    - role: create_prefixes
+      tags: prefixes
+
+- name: PLAY 5 - Assign IP Addresses
+  connection: local
+  hosts: localhost
+  gather_facts: False
+
+  roles:
+    - role: assign_ip_addresses 
+      tags: assign_ip_addresses 

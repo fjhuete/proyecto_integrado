@@ -1,0 +1,5 @@
+---
+ipam_roles:
+
+  - name: red local
+  - name: red vm

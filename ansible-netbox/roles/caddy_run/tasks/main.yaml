@@ -1,0 +1,8 @@
+---
+
+- name: Arrancar Caddy
+  service:
+    name: caddy
+    enabled: true
+    state: restarted
+  become: yes

@@ -1,0 +1,7 @@
+---
+
+- name: Instalación de Redis
+  apt:
+    name: redis-server
+    state: latest
+  become: yes

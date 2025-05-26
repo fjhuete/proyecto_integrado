@@ -1,0 +1,7 @@
+---
+
+- name: Instalación de Caddy
+  apt:
+    name: caddy
+    state: latest
+  become: yes

@@ -1,0 +1,12 @@
+---
+
+- name: Instalación de Postgres
+  apt:
+    pkg: 
+      - postgresql
+      - postgresql-contrib
+      - libpq-dev
+      - python3-psycopg2
+      - acl
+    state: latest
+  become: yes

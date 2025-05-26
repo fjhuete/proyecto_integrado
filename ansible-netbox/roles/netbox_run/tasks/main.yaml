@@ -1,0 +1,28 @@
+---
+
+- name: Definición de los servicios
+  copy:
+    src: /opt/netbox/contrib/{{ item }}.service 
+    dest: /etc/systemd/system/
+    remote_src: yes
+  with_items:
+    - netbox-rq
+    - netbox
+   
+- name: Aplicar los cambios en Systemd
+  command:
+    cmd: systemctl daemon-reload
+
+- name: Habilitar y arrancar NetBox
+  service:
+    name: netbox
+    state: started
+    enabled: true
+  become: yes
+
+- name: Habilitar y arrancar Netbox-rq
+  service:
+    name: netbox-rq
+    state: started
+    enabled: true
+  become: yes

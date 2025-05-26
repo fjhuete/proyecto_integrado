@@ -1,0 +1,15 @@
+---
+- name: Modificación de postgresql.conf para permitir conexiones remotas a Postgres
+  lineinfile:
+    path: /etc/postgresql/{{ pg_version }}/main/postgresql.conf
+    regexp: '^# listen_addresses'
+    line: listen_addresses = '*'
+
+- name: Modificación de pg_hba para permitir conexiones remotas a Postgres
+  blockinfile:
+    path: /etc/postgresql/{{ pg_version }}/main/pg_hba.conf
+    insertafter: EOF
+    marker: "# {mark} Ansible Managed Block"
+    block: |
+      # IPv4 remote connectios:
+      host    all             all             0.0.0.0/0               scram-sha-256

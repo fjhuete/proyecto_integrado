@@ -1,0 +1,122 @@
+---
+
+- name: Instalación de git
+  apt:
+    name: git
+    state: latest
+  become: yes
+  
+- name: Creación del directorio para la instalación de NetBox
+  file:
+    path: /opt/netbox
+    state: directory
+
+- name: Clonación del repositorio de GitHub
+  git:
+    repo: 'https://github.com/netbox-community/netbox.git'
+    dest: /opt/netbox
+    version: "{{ version }}"
+    
+- name: Creación del grupo netbox
+  group:
+    name: netbox
+    state: present
+    system: true
+
+- name: Creación del usuario netbox
+  user:
+    name: netbox
+    group: netbox
+    system: true
+    
+- name: Concesión de permisos necesarios al usuario netbox
+  file:
+    path: '/opt/netbox/netbox/{{ item }}/'
+    state: directory
+    recurse: yes
+    owner: netbox
+  with_items:
+    - media
+    - reports
+    - scripts
+
+- name: Creación del fichero de configuración
+  copy:
+    src: /opt/netbox/netbox/netbox/configuration_example.py
+    dest: /opt/netbox/netbox/netbox/configuration.py
+    remote_src: yes
+    force: false
+
+- name: Creación de la clave secreta
+  command:
+    cmd: python3 generate_secret_key.py
+    chdir: /opt/netbox/netbox/
+  register: secret_key
+
+- name: Edición del fichero de configuración para añadir los AllowedHosts
+  lineinfile:
+    path: /opt/netbox/netbox/netbox/configuration.py
+    search_string: 'ALLOWED_HOSTS'
+    line: ALLOWED_HOSTS = ["{{ allowed_hosts }}"]
+    
+- name: Edición de la conexión a Postgres en el fichero de configuración
+  blockinfile:
+    path: /opt/netbox/netbox/netbox/configuration.py
+    marker: "# {mark} Configuración Postgres de Ansible"
+    block: |
+      DATABASE = {
+        'NAME': '{{ db_name }}',
+        'USER': '{{ db_user }}',
+        'PASSWORD': '{{ db_passwd }}',
+        'HOST': '{{ db_host }}',
+        'PORT': '',
+        'CONN_MAX_AGE': 300,
+        }
+
+- name: Edición de la conexión a Redis en el fichero de configuración
+  blockinfile:
+    path: /opt/netbox/netbox/netbox/configuration.py
+    marker: "# {mark} Configuración Redis de Ansible"
+    block: |
+      REDIS = {
+        'tasks': {
+          'HOST': '{{ db_host }}',
+          'PORT': 6379,
+          'PASSWORD': '',
+          'DATABASE': 0,
+          'SSL': False,
+         },
+        'caching': {
+          'HOST': '{{ db_host }}',
+          'PORT': 6379,
+          'PASSWORD': '',
+          'DATABASE': 1,
+          'SSL': False,
+        }
+      }
+
+- name: Edición del fichero de configuración para añadir la secret key
+  lineinfile:
+    path: /opt/netbox/netbox/netbox/configuration.py
+    search_string: 'SECRET_KEY'
+    line: SECRET_KEY = "{{ secret_key.stdout }}"
+
+- name: Instalación de NetBox
+  command: 
+    cmd: /opt/netbox/upgrade.sh
+
+#- name: Creación del súper usuario
+#  community.general.django_manage: 
+#    command: "createsuperuser --noinput --username={{ django_user }} --#email={{ django_mail }}"
+#    project_path: /opt/netbox/netbox/
+#    virtualenv: /opt/netbox/venv/
+#  environment:
+#   DJANGO_SUPERUSER_PASSWORD: "{{ django_passwd }}"
+#   DJANGO_SUPERUSER_USERNAME: "{{ django_user }}" 
+#   DJANGO_SUPERUSER_EMAIL: "{{ django_mail }}"
+
+- name: Programación del script de mantenimiento
+  file:
+    src: /opt/netbox/contrib/netbox-housekeeping.sh
+    dest: /etc/cron.daily/netbox-housekeeping
+    state: link

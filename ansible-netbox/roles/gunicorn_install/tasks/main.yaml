@@ -1,0 +1,7 @@
+---
+
+- name: Instalación de gunicorn
+  copy:
+    src: /opt/netbox/contrib/gunicorn.py 
+    dest: /opt/netbox/gunicorn.py
+    remote_src: yes

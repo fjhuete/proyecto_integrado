@@ -1,0 +1,10 @@
+---
+prefixes:
+
+  - prefix: 192.168.0.0/25
+    status: active
+    description: Red local
+
+  - prefix: 172.22.0.0/25
+    status: active
+    description: Red VM

@@ -1,0 +1,8 @@
+---
+
+- name: Arrancar Redis
+  service:
+    name: redis
+    enabled: true
+    state: restarted
+  become: yes

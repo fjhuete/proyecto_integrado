@@ -1,0 +1,14 @@
+---
+
+ssh_user: debian
+version: v4.2.7
+secret_key: secret_key
+allowed_hosts: '*'
+db_name: netbox
+db_user: netbox
+db_passwd: asdasd
+django_user: admin
+django_mail: a@a.org
+django_passwd: admin
+pg_version: 15
+db_host: 10.0.0.160
