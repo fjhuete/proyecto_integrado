@@ -26,10 +26,12 @@
 				<section data-background="#DEFFD6">
 					<h3>Despliegue de la aplicación Python de gestión de la infraestructura de red NetBox mediante la especificación ASGI y usando Caddy como proxy inverso</h3>
 					<p>
-						<small>Proyecto Integrado de <a href="http://javihuete.site">Francisco Javier Huete</a>, alumno del <a href="https://dit.gonzalonazareno.org">I.E.S. Gonzalo Nazareno</a></small>
+						Proyecto Integrado de <a href="http://javihuete.site">Francisco Javier Huete</a>
 					</p>
 					<p>
-						<small>Tutorizado por <a href="https://www.josedomingo.org/pledin/">José Domingo Muñoz</a></small>
+						<small>Alumno del <a href="https://dit.gonzalonazareno.org">I.E.S. Gonzalo Nazareno</a> 
+						<br>
+						Tutorizado por <a href="https://www.josedomingo.org/pledin/">José Domingo Muñoz</a></small>
 					</p>
 					<a href="https://github.com/netbox-community/netbox">
 						<img src="https://raw.githubusercontent.com/netbox-community/netbox/main/docs/netbox_logo_light.svg" alt="reveal.js logo" style="height: 60px; margin: 0 2% 4rem 2%; background: transparent;" class="demo-logo">
@@ -129,7 +131,7 @@
 						> Se trata de centralizar la monitorización, gestión y planificación de los sistemas críticos que constituyen los centros de datos.
 					</section>
 				</section>
-				<section>
+				<section data-background="#00857d">
 					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						## Fundamentos teóricos
 
@@ -168,14 +170,11 @@
 						#### WSGI vs ASGI
 
 						| WSGI | ASGI |
-						| :---: | :---: |
+						| --- | --- |
 						| Modelo de programación síncrono | Modelo de programación asíncrono |
 						| Recibe las solicitudes de forma secuencial: bloquea su ejecución cada vez que recibe una petición | Procesa diferente peticiones de manera paralela |
 						| Limitación cuando las tareas requieren un tiempo de procesamiento largo | Mejor capacidad de respuesta y concurrencia |
-						| Falta de compatibilidad con algunos protocolos actuales | Maneja mejor conexiones en tiempo real con protocolos como long-polling o WebSockets |
-						| Soporte para HTTP/1.1 | Soporte para HTTP/2 y WebSockets |
-						| Consumo más elevado de los recursos del sistema | Menor consumo de recursos |
-						| Se puede usar un middleware síncrono | El middleware debe soportar operaciones asíncronas |					
+						| Falta de compatibilidad con algunos protocolos actuales | Maneja mejor conexiones en tiempo real con protocolos como long-polling o WebSockets |			
 					</section>
 					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						### ASGI
@@ -183,7 +182,7 @@
 						#### WSGI vs ASGI
 
 						| WSGI | ASGI |
-						| :---: | :---: |
+						| --- | --- |
 						| Soporte para HTTP/1.1 | Soporte para HTTP/2 y WebSockets |
 						| Consumo más elevado de los recursos del sistema | Menor consumo de recursos |
 						| Se puede usar un middleware síncrono | El middleware debe soportar operaciones asíncronas |					
@@ -212,7 +211,7 @@
 						#### Ventajas y desventajas
 
 						| Ventajas | Desventajas |
-						| :------: | :---------: |
+						| ------ | --------- |
 						| Mejor rendimiento | Requiere modificar el código de la aplicación |
 						| Operaciones simultáneas sin bloquear el proceso principal | Mayor complejidad en la programación |
 						| Soporte nativo para protocolos más modernos | La depuración del código puede ser más difícil y costosa |
@@ -220,7 +219,7 @@
 						| Ejecución del código tras haber enviado la respuesta HTTP | Puede producirse un cuello de botella en el mapeo relacional de objetos |
 					</section>
 				</section>
-				<section>
+				<section data-background="#DEFFD6">
 					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						## Fundamentos teóricos
 
@@ -258,7 +257,7 @@
 							- Balanceo de carga
 							- Gestión de reintentos
 							- Configuración de timeouts
-							- Gestión de bakcends dinámicos
+							- Gestión de backends dinámicos
 					</section>
 					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						### Caddy
@@ -271,19 +270,257 @@
 							- API de configuración
 					</section>
 					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						### Caddy
-
-						#### Métodos de configuración
+						### Métodos de configuración
 
 						##### Caddyfile
 
+						Fichero de configuración que utiliza directivas y bloques de sitio.
+
+						| Directiva | Función |
+						| ------- | -----: |
+						| `root` | Indica la raíz del sitio |
+						| `file_server` | Sirve archivos estáticos |
+						| `reverse_proxy` | Configura un proxy inverso |
+						| `log` | Indica la ruta al fichero de log |
+						| `rewrite` | Reescribe las URL |
+						| `php_fastcgi` | Reenvía la petición a FastCGI para server aplicaciones PHP |
+						| `load_balance` | Balancea la carga entre varios destinos |
+					</section>
+					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						### Métodos de configuración
+
 						##### JSON
 
-						##### API
+						- Automatizaciones o integraciones con herramientas de gestión de la configuración
+						- Adaptadores de configuración: convierten a JSON ficheros
+							- Caddyfile
+							- YAML
+							- TOML
+							- Configuración de Nginx
+						- Mayor flexibilidad y control
+						- Más adecuado para configuraciones complejas y automatizadas
+					</section>
+					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						### Métodos de configuración
+
+						##### API RESTful
+
+						- Cargar, descargar y gestionar la configuración
+						- **Sin reiniciar**
+						- Facilita la integración con otras herramientas de orquestación
+						- Permite flujos de trabajo automatizados
+						- Gestión dinámica de la configuración
+						- Fundamental para flujos de integración continua
 					</section>
 					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						### Caddy
+
+						#### Gestión de HTTPS y certificados
+
+						- Gestión automática
+							- Protocolo ACME y Let's Encrypt
+						- Nombre de dominio
+							- Caddy intenta resolver el desafío ACME automáticamente para demostrar el control sobre el dominio a Let's Encrypt
+						- Reproduce los pasos que se siguen manualmente con herramientas como `certbot`
+						- Redirige el tráfico del puerto 80 al 443 por defecto
+						- Ofrece el contenido por HTTPS con un certificado autofirmado si el dominio es `localhost`
 					</section>
+					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						### Caddy
+
+						#### Ventajas y desventajas
+
+						| Ventajas | Desventajas |
+						| -------- | ----------- |
+						| Configuración simple e intuitiva | Comunidad más pequeña |
+						| Gestión automática de HTTPS | Menos recursos para educación y resolución de problemas |
+						| Configuración dinámica a través de su API RESTful | Menor control de opciones de configuración |
+						| Recarga de su configuración sin interrupciones en el servicio | Características no soportadas |
+						| Consumo mínimo de recursos | Menor rendimiento en solicitudes por segundo bajo carga extrema |
+					</section>
+				</section>
+				<section>
+					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						### Instalación de NetBox
+
+						- Bases de datos
+							- Postgres
+								- Instalación
+								- Configuración del acceso remoto
+								- Creación de la base de datos
+							- Redis
+								- Instalación
+								- Configuración del acceso remoto
+								```ini
+								#En /etc/redis/redis.conf
+								bind 0.0.0.0
+								...
+								protected-mode no
+								```
+					</section>
+					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						### Instalación de NetBox
+
+						- Instalación de dependencias
+							- Python
+							- Librerías
+							- Git
+						- Clonación del repositorio de github
+						```bash
+						git clone https://github.com/netbox-community/netbox.git
+						```
+						- Creación del usuario de sistema
+						```bash-session
+						sudo adduser --system --group netbox
+						```
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h3 data-id="code-title">Configuración de NetBox</h3>
+
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1|3-11|13-28|30|32"><script type="text/template">
+							ALLOWED_HOSTS = ['*']
+
+							DATABASES = {
+								'ENGINE': 'django.db.backends.postgresql',
+								'NAME': 'netbox',
+								'USER': 'netbox',
+								'PASSWORD': '/zIwTLL+8TYmmgQwVJeU',
+								'HOST': '10.0.0.160',
+								'PORT': '5432',
+								'CONN_MAX_AGE': 300,
+								}
+							
+							REDIS = {
+								'tasks': {
+									'HOST': '10.0.0.160',
+									'PORT': 6379,
+									'PASSWORD': '',
+									'DATABASE': 0,
+									'SSL': False,
+								},
+								'caching': {
+									'HOST': '10.0.0.160',
+									'PORT': 6379,
+									'PASSWORD': '',
+									'DATABASE': 1,
+									'SSL': False,
+								}
+								}
+
+							SECRET_KEY = "h=&#0bILs^OHArFbsRwr@Ws1Z+VelOmC4ZxPP4nK8IE&WcCd5a"
+
+							CSRF_TRUSTED_ORIGINS = ["https://proyecto.javihuete.site"]
+						</script></code></pre>
+					</section>
+					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						### Instalación de NetBox
+
+						- Script de Instalación	
+							- Crea entorno virtual
+							- Instala requerimientos
+								```bash
+								pip install -r requirements.txt
+							- Migra el esquema de las bases de datos
+								```bash
+								python3 manage.py migrate
+								```
+							- Genera la documentación local
+							- Agrega los ficheros estáticos al almacenamiento local
+								```bash
+								python3 manage.py collectstatic
+								```
+					</section>
+					<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						### Instalación de NetBox
+
+						- Creación del súper usuario
+						```bash
+						python3 manage.py createsuperuser
+						```
+						- Programación de tareas de limpieza con el script proporcionado por NetBox
+						```bash
+						sudo ln -s /opt/netbox/contrib/netbox-housekeeping.sh \
+						/etc/cron.daily/netbox-housekeeping
+						```
+						- Prueba de funcionamiento de la aplicación
+						```bash
+						python3 manage.py runserver 0.0.0.0:8000 --insecure
+						```
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h3 data-id="code-title">Instalación del servidor ASGI</h3>
+
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-3|5-12|14,15|17-22"><script type="text/template">
+							#Instalación de Daphne
+							source /opt/netbox/venv/bin/activate
+							pip install daphne
+
+							#Creación del fichero asgi.py
+							import os
+
+							from django.core.asgi import get_asgi_application
+
+							os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'netbox.settings')
+
+							application = get_asgi_application()
+
+							#Configuración del demonio en /etc/systemd/system/netbox.service
+							ExecStart=/opt/netbox/venv/bin/daphne netbox.asgi:application --bind 127.0.0.1 --port 8001
+
+							#Recargar systemd
+							sudo systemctl daemon-reload
+
+							#Arrancar y habilitar los servicios de NetBox
+							sudo systemctl start netbox netbox-rq
+							sudo systemctl enable netbox netbox-rq
+						</script></code></pre>
+					</section>
+				</section>
+				<section data-background="#00857d">
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h3 data-id="code-title">Configuración de Caddy en los servidores de aplicación</h3>
+
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1,19|2-10|11|12-14|15|16,17"><script type="text/template">
+							:80 {
+								log {
+									output file /var/log/caddy/access.log
+									format filter {
+									wrap console
+									fields {
+										request>headers>Authorization delete
+									}
+									}
+								}
+								encode gzip
+								@excludeDirs {
+									not path /static/* /media/*
+								}
+								reverse_proxy @excludeDirs localhost:8001
+								file_server {
+									root /opt/netbox/netbox/
+								}
+								}
+						</script></code></pre>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h3 data-id="code-title">Configuración de Caddy en el servidor expuesto a Internet</h3>
+
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1,10|2,3,9|5-8"><script type="text/template">
+							proyecto.javihuete.site {
+								reverse_proxy 172.22.201.4:80 172.22.201.219:80 {
+									lb_policy ip_hash
+
+									health_uri /login/?next=/
+									health_interval 60s
+									health_timeout 3s
+									health_status 2xx
+								}
+							}
+						</script></code></pre>
+					</section>
+				</section>
+				<section data-markdown data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+					# Demostraciones de funcionamiento y configuración
 				</section>
 			</div>
 		</div>

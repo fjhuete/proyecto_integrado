@@ -3,10 +3,12 @@
  *
  * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
  */
-@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic);
+/* @import url(https://fonts.googleapis.com/css?family=Montserrat:700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic); */
 @import url(https://fonts.googleapis.com/css2?family=Fira+Code);
 @import url(https://fonts.googleapis.com/css2?family=Fira+Sans:200,400,700,800,900);
+@import url(https://fonts.googleapis.com/css2?family=Signika:300,400,500,600,700);
+/* @import url(https://fonts.googleapis.com/css2?family=Heebo:100..900); */
 section.has-light-background, section.has-light-background h1, section.has-light-background h2, section.has-light-background h3, section.has-light-background h4, section.has-light-background h5, section.has-light-background h6 {
   color: #001423;
 }
@@ -17,17 +19,17 @@ section.has-light-background, section.has-light-background h1, section.has-light
 :root {
   --r-background-color: #001423;
   --r-main-font: Fira Sans, sans-serif;
-  --r-main-font-size: 40px;
+  --r-main-font-size: 30px;
   --r-main-color: #eee;
   --r-block-margin: 20px;
   --r-heading-margin: 0 0 20px 0;
-  --r-heading-font: Fira Sans, Impact, sans-serif;
+  --r-heading-font: Signika, Impact, sans-serif;
   --r-heading-color: #eee;
   --r-heading-line-height: 1.2;
   --r-heading-letter-spacing: -0.03em;
   --r-heading-text-transform: none;
   --r-heading-text-shadow: none;
-  --r-heading-font-weight: 900;
+  --r-heading-font-weight: 700;
   --r-heading1-text-shadow: none;
   --r-heading1-size: 3.77em;
   --r-heading2-size: 2.11em;
@@ -37,7 +39,7 @@ section.has-light-background, section.has-light-background h1, section.has-light
   --r-link-color: #00857d;
   --r-link-color-dark: #AFFC41;
   --r-link-color-hover: #1DD3B0;
-  --r-selection-background-color: #1DD3B0;
+  --r-selection-background-color: #DEFFD6;
   --r-selection-color: #fff;
   --r-overlay-element-bg-color: 240, 240, 240;
   --r-overlay-element-fg-color: 0, 0, 0;
