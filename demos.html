@@ -95,76 +95,47 @@
   </script>
 <h1 id="carga-de-datos-a-la-aplicaci%C3%B3n">Carga de datos a la aplicación</h1>
 <h2 id="api">API</h2>
-<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/netbox-community/Device-Type-Library-Import.git
-<span class="hljs-built_in">cd</span> Device-Type-Library-Import
-python3 -m venv venv
-<span class="hljs-built_in">source</span> venv/bin/activate
-</div></code></pre>
-<pre class="hljs"><code><div>pip install -r requirements.txt
-</div></code></pre>
-<pre class="hljs"><code><div>cp .env.example .env
-nano .env
-</div></code></pre>
-<pre class="hljs"><code><div><span class="hljs-attr">NETBOX_URL</span>=https://proyecto.javihuete.site
-<span class="hljs-attr">NETBOX_TOKEN</span>=<span class="hljs-number">17578</span>e115ef0e83cd0598b12b74fc6da3bc97f18
-<span class="hljs-attr">REPO_URL</span>=https://github.com/netbox-community/devicetype-library.git
-<span class="hljs-attr">REPO_BRANCH</span>=master
-<span class="hljs-attr">IGNORE_SSL_ERRORS</span>=<span class="hljs-literal">False</span>
-<span class="hljs-comment">#REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt # you should enable this&gt;</span>
-<span class="hljs-comment">#SLUGS=c9300-48u isr4431 isr4331</span>
-</div></code></pre>
-<pre class="hljs"><code><div>./nb-dt-import.py --vendors hpe
-</div></code></pre>
-<hr>
-<pre class="hljs"><code><div>curl -X <span class="hljs-string">'POST'</span> \
+<h3 id="crear-un-dispositivo-usando-la-api">Crear un dispositivo usando la API</h3>
+<pre class="hljs"><code><div>curl -X POST \
   <span class="hljs-string">'https://proyecto.javihuete.site/api/dcim/devices/'</span> \
   -H <span class="hljs-string">'accept: application/json'</span> \
   -H <span class="hljs-string">'Content-Type: application/json'</span> \
-  -H <span class="hljs-string">'X-CSRFTOKEN: faYlf7DEOeMNPBH7PshVHS6vBj58naklpAvSjwe1PrpdN33AHJhwAMnXxM3pY8zm'</span> \
+  -H <span class="hljs-string">'Authorization: Token 17578e115ef0e83cd0598b12b74fc6da3bc97f18'</span> \
   -d <span class="hljs-string">'{
-  "name": "string",
-  "device_type": 0,
-  "role": 0,
-  "tenant": 0,
-  "platform": 0,
-  "serial": "string",
-  "asset_tag": "string",
-  "site": 0,
-  "location": 0,
-  "rack": 0,
-  "position": 999,
-  "face": "front",
-  "latitude": 99,
-  "longitude": 999,
-  "status": "offline",
-  "airflow": "front-to-rear",
-  "primary_ip4": 0,
-  "primary_ip6": 0,
-  "oob_ip": 0,
-  "cluster": 0,
-  "virtual_chassis": 0,
-  "vc_position": 255,
-  "vc_priority": 255,
-  "description": "string",
-  "comments": "string",
-  "config_template": 0,
-  "local_context_data": "string",
-  "tags": [
-    {
-      "name": "string",
-      "slug": "Rg95D1Bn0FS_xFenhX-qYt1mnekoznwj85brCHMsFTowpXUU4VK3NCOgkBR9d-3ftTtWnUQKIUR7_nt9N31G-q2NeTcmoFk",
-      "color": "ba8f1f"
-    }
-  ],
-  "custom_fields": {
-    "additionalProp1": "string",
-    "additionalProp2": "string",
-    "additionalProp3": "string"
-  }
-}'</span>
+    "name": "Kyurem",
+    "device_type": 101,
+    "role": 4,
+    "tenant": null,
+    "platform": 2,
+    "serial": "",
+    "asset_tag": null,
+    "site": 1,
+    "location": 1,
+    "rack": null,
+    "position": null,
+    "face": null,
+    "status": "active",
+    "airflow": null,
+    "description": "",
+    "comments": "",
+    "tags": [],
+    "custom_fields": {}
+  }'</span>
 </div></code></pre>
-<hr>
 <h2 id="ansible">Ansible</h2>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/netbox-community/netbox-zero-to-hero.git
+<span class="hljs-built_in">cd</span> netbox-zero-to-hero/ansible
+python3 -m venv .
+<span class="hljs-built_in">source</span> bin/activate
+python3 -m pip install --upgrade pip
+pip3 install pynetbox
+pip3 install ansible
+pip3 install netaddr
+pip3 install pytz
+ansible-galaxy collection install netbox.netbox
+<span class="hljs-built_in">export</span> NETBOX_API=<span class="hljs-string">'https://proyecto.javihuete.site'</span>
+<span class="hljs-built_in">export</span> NETBOX_TOKEN=17578e115ef0e83cd0598b12b74fc6da3bc97f18
+</div></code></pre>
 <pre class="hljs"><code><div><span class="hljs-meta">---</span>
 <span class="hljs-attr">ip_addresses:</span>
 
@@ -197,6 +168,14 @@ nano .env
       <span class="hljs-attr">name:</span> <span class="hljs-string">Gig-E</span> <span class="hljs-number">2</span>
     <span class="hljs-attr">address:</span> <span class="hljs-number">172.22</span><span class="hljs-number">.100</span><span class="hljs-number">.16</span><span class="hljs-string">/25</span>
     <span class="hljs-attr">status:</span> <span class="hljs-string">Reserved</span>
+
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">assigned_object:</span>
+      <span class="hljs-attr">device:</span> <span class="hljs-string">Kyurem</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">Gig-E</span> <span class="hljs-number">1</span>
+    <span class="hljs-attr">address:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.5</span><span class="hljs-string">/25</span>
+    <span class="hljs-attr">status:</span> <span class="hljs-string">Reserved</span>
+</div></code></pre>
+<pre class="hljs"><code><div>ansible-playbook populate_netbox_ipam.yml
 </div></code></pre>
 <pre class="hljs"><code><div><span class="hljs-meta">---</span>
 <span class="hljs-attr">ip_addresses:</span>
@@ -230,6 +209,12 @@ nano .env
       <span class="hljs-attr">name:</span> <span class="hljs-string">Gig-E</span> <span class="hljs-number">2</span>
     <span class="hljs-attr">address:</span> <span class="hljs-number">172.22</span><span class="hljs-number">.100</span><span class="hljs-number">.16</span><span class="hljs-string">/25</span>
     <span class="hljs-attr">status:</span> <span class="hljs-string">Active</span>
+
+ <span class="hljs-bullet">-</span> <span class="hljs-attr">assigned_object:</span>
+      <span class="hljs-attr">device:</span> <span class="hljs-string">Kyurem</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">Gig-E</span> <span class="hljs-number">1</span>
+    <span class="hljs-attr">address:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.5</span><span class="hljs-string">/25</span>
+    <span class="hljs-attr">status:</span> <span class="hljs-string">Active</span>
 </div></code></pre>
 <h1 id="configuraci%C3%B3n-de-caddy-a-trav%C3%A9s-de-la-api">Configuración de Caddy a través de la API</h1>
 <h2 id="ver-la-configuraci%C3%B3n-actual">Ver la configuración actual</h2>
@@ -259,30 +244,39 @@ curl localhost:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/han
 </div></code></pre>
 <h4 id="crear-un-id-para-acceder-directamente-a-esta-configuraci%C3%B3n">Crear un ID para acceder directamente a esta configuración</h4>
 <pre class="hljs"><code><div>curl \
-	localhost:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams/@id \
+	localhost:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams/0/@id \
 	-H <span class="hljs-string">"Content-Type: application/json"</span> \
-	-d <span class="hljs-string">'"ip"'</span>
+	-d <span class="hljs-string">'"backend1"'</span>
 
-curl localhost:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams/
+curl \
+	localhost:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams/1/@id \
+	-H <span class="hljs-string">"Content-Type: application/json"</span> \
+	-d <span class="hljs-string">'"backend2"'</span>
+
+curl localhost:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams/ | jq
 </div></code></pre>
 <h4 id="modificar-la-ip-de-un-backend-usando-el-id">Modificar la IP de un backend usando el ID</h4>
 <pre class="hljs"><code><div>curl \
-	localhost:2019/id/ip/1/dial/ \
+	localhost:2019/id/backend2 \
 	-H <span class="hljs-string">"Content-Type: application/json"</span> \
-	-d <span class="hljs-string">'"172.22.200.202:80"'</span>
+	-d <span class="hljs-string">'{"@id":"backend2","dial":"172.22.200.202:80"}'</span>
 </div></code></pre>
 <h4 id="ver-los-cambios">Ver los cambios</h4>
-<pre class="hljs"><code><div>curl localhost:2019/id/ip/
+<pre class="hljs"><code><div>curl localhost:2019/id/backend2/
 </div></code></pre>
 <h3 id="ventajas-del-uso-de-la-api-automatizar-los-cambios-en-la-configuraci%C3%B3n">Ventajas del uso de la API: automatizar los cambios en la configuración</h3>
-<pre class="hljs"><code><div>bash lb_policy.sh random
+<pre class="hljs"><code><div>cat lb_policy.sh
+
+bash lb_policy.sh random
 </div></code></pre>
 <h2 id="funcionamiento-del-health-check">Funcionamiento del health check</h2>
 <h3 id="ver-el-estado-de-salud-de-los-backends">Ver el estado de salud de los backends</h3>
 <pre class="hljs"><code><div>curl <span class="hljs-string">"localhost:2019/metrics"</span> | grep caddy_reverse_proxy_upstreams_healthy
 </div></code></pre>
 <h3 id="revisar-el-estado-de-salud-de-los-backends-con-un-script">Revisar el estado de salud de los backends con un script</h3>
-<pre class="hljs"><code><div>bash salud.sh
+<pre class="hljs"><code><div>cat salud.sh
+
+bash salud.sh
 </div></code></pre>
 
 </body>
