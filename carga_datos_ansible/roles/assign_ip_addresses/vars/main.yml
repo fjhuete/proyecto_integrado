@@ -1,0 +1,38 @@
+---
+ip_addresses:
+
+  - assigned_object:
+      device: Victini
+      name: GigabitEthernet1
+    address: 192.168.0.1/25
+    status: Active
+
+  - assigned_object:
+      device: Reshiram
+      name: Gig-E 1
+    address: 192.168.0.2/25
+    status: Active
+
+  - assigned_object:
+      device: Zekrom
+      name: Gig-E 1
+    address: 192.168.0.3/25
+    status: Active
+
+  - assigned_object:
+      device: Keldeo
+      name: Gig-E 1
+    address: 192.168.0.4/25
+    status: Active
+
+  - assigned_object:
+      device: Reshiram
+      name: Gig-E 2
+    address: 172.22.100.16/25
+    status: Reserved
+
+  - assigned_object:
+      device: Kyurem
+      name: Gig-E 1
+    address: 192.168.0.5/25
+    status: Active
